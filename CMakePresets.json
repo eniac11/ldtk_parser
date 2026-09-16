@@ -1,0 +1,88 @@
+{
+    "version": 10,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 30,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "default",
+            "displayName": "Default Config",
+            "description": "Default build using Ninja generator",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}"
+        },
+        {
+            "name": "ninja-multi",
+            "inherits": "default",
+            "displayName": "Ninja Multi-Config",
+            "description": "Default build using Ninja Multi-Config generator",
+            "generator": "Ninja Multi-Config",
+            "cacheVariables": {
+                "CMAKE_CONFIGURATION_TYPES": "Debug;Release"
+            }
+        },
+        {
+            "name": "ninja-multi-tests",
+            "inherits": "ninja-multi",
+            "displayName": "Ninja Multi-Config Tests",
+            "description": "Default build using Ninja Multi-Config generator Tests",
+            "cacheVariables": {
+                "BUILD_TESTING": "YES",
+                "LDTK_PARSER_BUILD_EXAMPLES": "YES"
+            }
+        }
+
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "ninja-multi"
+        },
+        {
+            "name": "default-test",
+            "configurePreset": "ninja-multi-tests"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default-debug",
+            "configurePreset": "ninja-multi-tests",
+            "configuration": "Debug",
+            "output": {"outputOnFailure": true},
+            "execution": {"noTestsAction": "error", "stopOnFailure": true}
+        },
+        {
+            "name": "default-release",
+            "configurePreset": "ninja-multi-tests",
+            "configuration": "Release",
+            "output": {"outputOnFailure": true},
+            "execution": {"noTestsAction": "error", "stopOnFailure": true}
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "test",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "ninja-multi-tests"
+                },
+                {
+                    "type": "build",
+                    "name": "default-test"
+                },
+                {
+                    "type": "test",
+                    "name": "default-debug"
+                },
+                {
+                    "type": "test",
+                    "name": "default-release"
+                }
+
+            ]
+        }
+    ]
+}

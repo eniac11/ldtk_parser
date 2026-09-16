@@ -1,0 +1,5 @@
+add_executable(ldtk_example ldtk_example.cpp)
+target_link_libraries(ldtk_example PRIVATE ldtk_parser_io)
+
+add_executable(ldtk_tile_data_generate ldtk_tiledata_generator.cpp)
+target_link_libraries(ldtk_tile_data_generate PRIVATE ldtk_parser_io)

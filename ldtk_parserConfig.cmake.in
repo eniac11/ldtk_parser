@@ -1,0 +1,35 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+include(FeatureSummary)
+
+find_dependency(glm 0.9.9)
+find_dependency(jsoncpp 1.9)
+
+include(${CMAKE_CURRENT_LIST_DIR}/ldtk_parserTargets.cmake)
+
+set(_LDTK_PARSER_COMPS IO)
+
+foreach(_comp ${ldtk_parser_FIND_COMPONENTS})
+    if (NOT _comp IN_LIST _LDTK_PARSER_COMPS)
+        set(ldtk_parser_FOUND False)
+        set(ldtk_parser_NOT_FOUND_MESSAGE "Unsupported component: ${_comp}")
+    endif()
+    if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/ldtk_parser${_comp}Targets.cmake)
+        if (_comp STREQUALS "IO")
+            find_dependency(jsoncpp 1.9)
+        endif()
+        include(${CMAKE_CURRENT_LIST_DIR}/ldtk_parser${_comp}Targets.cmake)
+        set(ldtk_parser_${_comp}_FOUND True)
+    else()
+        set(ldtk_parser_${_comp}_FOUND False)
+    endif()
+endforeach()
+
+
+
+check_required_components(ldtk_parser)
+set_package_properties(ldtk_parser PROPERTIES
+    DESCRIPTION "Json parser for LDtk project files"
+    URL "https://github.com/eniac11/ldtk_parser"
+)
