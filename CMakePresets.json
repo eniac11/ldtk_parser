@@ -41,8 +41,14 @@
             "configurePreset": "ninja-multi"
         },
         {
-            "name": "default-test",
-            "configurePreset": "ninja-multi-tests"
+            "name": "default-test-debug",
+            "configurePreset": "ninja-multi-tests",
+            "configuration": "Debug"
+        },
+        {
+            "name": "default-test-release",
+            "configurePreset": "ninja-multi-tests",
+            "configuration": "Release"
         }
     ],
     "testPresets": [
@@ -71,7 +77,11 @@
                 },
                 {
                     "type": "build",
-                    "name": "default-test"
+                    "name": "default-test-debug"
+                },
+                {
+                    "type": "build",
+                    "name": "default-test-release"
                 },
                 {
                     "type": "test",
